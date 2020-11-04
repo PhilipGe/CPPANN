@@ -7,7 +7,6 @@ int main(){
 
     Layer *layer = new Layer(3,3);
 
-    cout<<layer<<endl;
-
-    return 0;
+    cout<<layer->weights<<endl;
+    return 0; 
 }

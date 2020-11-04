@@ -6,11 +6,12 @@ using namespace std;
 
 class Layer{
     private:
-        MatrixXd weights;
+        
         int thisLayerNodes;
         int previousLayerNodes;
     
     public:
+        MatrixXd weights;
         Layer(int numberOfNodesInThisLayer, int numberOfNodesInPreviousLaver = 0);
         MatrixXd feedForward(MatrixXd outputs);
 };
