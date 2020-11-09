@@ -13,13 +13,18 @@ class Layer{
 
         //for feed forward
         
-        MatrixXd outputs;
         double sigmoid(double x);
         MatrixXd sigmoid(MatrixXd mat);
     
     public:
+        //for feed forward
+        MatrixXd outputs;
+        
         MatrixXd productSums;
         MatrixXd weights;
         Layer(int numberOfNodesInThisLayer, int numberOfNodesInPreviousLaver = 0);
+        Layer();
         MatrixXd feedForward(MatrixXd outputs);
+
+        static int numOfLayers;
 };

@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -c -Wall -o
-CFILES = bin/main.o bin/Layer.o
+CFILES = bin/main.o bin/Layer.o bin/Network.o
 EXEC_FILE = output/main
 
 all:output/main
@@ -13,6 +13,9 @@ bin/main.o:src/main.cpp
 
 bin/Layer.o: src/Layer.cpp
 	$(CC) $(CFLAGS) bin/Layer.o src/Layer.cpp 
+
+bin/Network.o: src/Network.cpp
+	$(CC) $(CFLAGS) bin/Network.o src/Network.cpp 
 
 run: $(EXEC_FILE)
 	./$(EXEC_FILE)
