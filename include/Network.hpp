@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <eigen/Eigen/Dense>
 #include "../include/Layer.hpp"
 
@@ -10,8 +11,20 @@ class Network{
         int numberOfHiddenlayers;
         int nodesPerLayer;
         int numberOfInputs;
+        int learningSpeed;
     public:
-        Layer ** network;
+        //INITIALIZATION
+        vector<Layer> network;
         Network(int numberOfHiddenLayers, int nodesPerLayer, int numberOfInputs);
-        MatrixXd feedForward(MatrixXd inputs);
+        Network(int numberOfHiddenLayers, int nodesPerLayer, int numberOfInputs, bool test);
+
+        //FEED FORWARD
+        double feedForward(MatrixXd inputs, bool print = false);
+
+        //BACKPROPOGATION
+
+
+        //DEBUGGING
+        void printNetworkWeights();
 };
+

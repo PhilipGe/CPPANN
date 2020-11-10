@@ -2,22 +2,24 @@
 #include "../include/Layer.hpp"
 #include <math.h>
 
-int Layer::numOfLayers = 0;
 
 //Creates a layer with a parameterized amount of nodes and parameterized (unless not specified) amount of weights per node
-Layer::Layer(int thisLayerNodes, int previousLayerNodes) {
+Layer::Layer(int thisLayerNodes, int previousLayerNodes, bool test, int weightConstant) {
     this->thisLayerNodes = thisLayerNodes;
-    this->previousLayerNodes = previousLayerNodes != 0 ? previousLayerNodes : thisLayerNodes;
-
-    weights = MatrixXd::Random(thisLayerNodes, previousLayerNodes);
-
+    this->previousLayerNodes = previousLayerNodes;
+    
+    if(!test){
+        weights = MatrixXd::Random(thisLayerNodes, previousLayerNodes);
+    }else{
+        weights = MatrixXd::Constant(thisLayerNodes, previousLayerNodes, weightConstant);
+    }
 }
 
 //the number of outputs is equal to the number of nodes in the previous layer
 //this function returns the outputs of this layer based on the outputs of the previous layer
     //it does so by taking the product
-MatrixXd Layer::feedForward(MatrixXd ioutputs){
-    productSums = weights*ioutputs;
+MatrixXd Layer::feedForward(MatrixXd previous_outputs){
+    productSums = weights*previous_outputs;
 
     outputs = sigmoid(productSums);
     return outputs;
@@ -37,10 +39,4 @@ MatrixXd Layer::sigmoid(MatrixXd ps){
     }
 
     return out;
-}
-
-//default constructor constructs a layers that acts as a palceholder in the initial array of layers (network[]) in Network.cpp 
-//it is later replaced by the other constructor Layer(int, int, int)
-Layer::Layer(){
-    Layer::numOfLayers += 1;
 }

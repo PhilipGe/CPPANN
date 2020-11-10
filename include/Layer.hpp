@@ -7,24 +7,30 @@ using namespace std;
 class Layer{
     private:
         
-        //for initialization
+        //INITIALIZATION
         int thisLayerNodes;
         int previousLayerNodes;
 
-        //for feed forward
-        
+        //FEED FORWARD
         double sigmoid(double x);
         MatrixXd sigmoid(MatrixXd mat);
+
+        //BACKPROPOGATION
+        double sigmoidDerivative(int x);
+        
     
     public:
-        //for feed forward
+        //FEED FORWARD
+        Layer(int thisLayerNodes, int previousLayerNodes, bool test = false, int weightConstant = 0);
+
+        //FEED FORWARD
+        MatrixXd feedForward(MatrixXd);
         MatrixXd outputs;
-        
         MatrixXd productSums;
         MatrixXd weights;
-        Layer(int numberOfNodesInThisLayer, int numberOfNodesInPreviousLaver = 0);
-        Layer();
-        MatrixXd feedForward(MatrixXd outputs);
 
-        static int numOfLayers;
+        //BACKPROPOGATION
+        MatrixXd errors;
+        MatrixXd derivatives;
+        
 };
