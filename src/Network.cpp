@@ -70,10 +70,26 @@ BACKPROPOGATION
 _____________________________________________________________________________
 
 */
+void Network::calculateErrors(double desiredOutput){
+
+    //calculate the last node's error
+    double lastLayerError = network[network.size()-1].outputs(0,0)-desiredOutput;
+    network[network.size()-1].errors(0,0) = lastLayerError;
 
 
+    //calculate the hidden nodes' errors
+    for(int currentLayer = network.size()-1;currentLayer >= 0;currentLayer--){
 
+    }
+}
 
+void Network::calculateDerivatives(){
+
+}
+
+void Network::updateWeights(){
+
+}
 
 /*
 DEBUGGING

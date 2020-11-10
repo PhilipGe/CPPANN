@@ -22,7 +22,9 @@ class Network{
         double feedForward(MatrixXd inputs, bool print = false);
 
         //BACKPROPOGATION
-
+        void calculateErrors(double desiredOutput);
+        void calculateDerivatives();
+        void updateWeights();
 
         //DEBUGGING
         void printNetworkWeights();

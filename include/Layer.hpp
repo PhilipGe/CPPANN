@@ -16,7 +16,7 @@ class Layer{
         MatrixXd sigmoid(MatrixXd mat);
 
         //BACKPROPOGATION
-        double sigmoidDerivative(int x);
+        double sigmoidDerivative(double x);
         
     
     public:
@@ -32,5 +32,4 @@ class Layer{
         //BACKPROPOGATION
         MatrixXd errors;
         MatrixXd derivatives;
-        
 };
