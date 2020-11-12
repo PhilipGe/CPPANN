@@ -30,6 +30,7 @@ class Layer{
         MatrixXd weights;
 
         //BACKPROPOGATION
-        MatrixXd errors;
+        DiagonalMatrix<double,1> lastLayerErrors;
+        DiagonalMatrix<double,3> hiddenLayerErrors;
         MatrixXd derivatives;
 };

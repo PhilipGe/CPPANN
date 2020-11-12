@@ -8,22 +8,28 @@ using namespace std;
 
 class Network{
     private:
-        int numberOfHiddenlayers;
-        int nodesPerLayer;
-        int numberOfInputs;
+        
         int learningSpeed;
+
+
     public:
-        //INITIALIZATION
+        //NETWORK PROPERTIES
+        const int numberOfHiddenLayers = 3;
+        const int nodesPerLayer = 3;
+        const int numberOfInputs = 5;
+        const int learningSpeed = 0.1;
+
+        //INITIALIZATION 
         vector<Layer> network;
-        Network(int numberOfHiddenLayers, int nodesPerLayer, int numberOfInputs);
-        Network(int numberOfHiddenLayers, int nodesPerLayer, int numberOfInputs, bool test);
+        Network();
+        Network(bool test);
 
         //FEED FORWARD
         double feedForward(MatrixXd inputs, bool print = false);
 
         //BACKPROPOGATION
         void calculateErrors(double desiredOutput);
-        void calculateDerivatives();
+        void calculateNonIndividualDerivatives();
         void updateWeights();
 
         //DEBUGGING

@@ -17,17 +17,24 @@ using namespace std;
 */
 
 int main(){
-    //Layer *lay = new Layer(3,4);
-    Network *net = new Network(3,3,5,true); 
+    /*Network *net = new Network(3,3,5);
 
-    MatrixXd in = MatrixXd::Constant(5,1,1);
-    cout<<"Inputs: \n"<<in<<endl<<endl;
-    
-    net->printNetworkWeights();
+    MatrixXd inputs = MatrixXd::Constant(5,1,1);
 
-    double out = net->feedForward(in, true);
+    net->feedForward(inputs);
 
-    cout<<out<<endl;
+    net->calculateErrors(1.0);
+
+    DiagonalMatrix<double, 3> m(1,2,3);
+
+    VectorX<double> vec(3);
+
+    vec<<1,2,2;
+    cout<<vec<<endl;
+
+    m.diagonal()<<vec;
+ 
+    cout<<m.diagonal()<<endl*/
 
     return 0; 
 }
