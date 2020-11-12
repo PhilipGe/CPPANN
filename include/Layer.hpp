@@ -1,5 +1,6 @@
 #pragma once
 #include <eigen/Eigen/Dense>
+#include "../include/Properties.hpp"
 
 using namespace Eigen;
 using namespace std;
@@ -31,6 +32,6 @@ class Layer{
 
         //BACKPROPOGATION
         DiagonalMatrix<double,1> lastLayerErrors;
-        DiagonalMatrix<double,3> hiddenLayerErrors;
+        DiagonalMatrix<double,Properties::nodesPerLayer> hiddenLayerErrors;
         MatrixXd derivatives;
 };

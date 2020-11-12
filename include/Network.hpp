@@ -1,23 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <eigen/Eigen/Dense>
+#include "../include/Properties.hpp"
 #include "../include/Layer.hpp"
+
 
 using namespace Eigen;
 using namespace std;
 
 class Network{
     private:
-        
-        int learningSpeed;
-
 
     public:
         //NETWORK PROPERTIES
-        const int numberOfHiddenLayers = 3;
-        const int nodesPerLayer = 3;
-        const int numberOfInputs = 5;
-        const int learningSpeed = 0.1;
+        int numberOfHiddenLayers = Properties::numberOfHiddenLayers;
+        int nodesPerLayer = Properties::nodesPerLayer;
+        int numberOfInputs = Properties::numberOfInputs;
+        int learningSpeed = Properties::learningSpeed;
 
         //INITIALIZATION 
         vector<Layer> network;
@@ -28,6 +27,8 @@ class Network{
         double feedForward(MatrixXd inputs, bool print = false);
 
         //BACKPROPOGATION
+        MatrixXd matrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
+        
         void calculateErrors(double desiredOutput);
         void calculateNonIndividualDerivatives();
         void updateWeights();

@@ -1,6 +1,7 @@
 #include <iostream>
-#include "../include/Network.hpp"
 #include "../include/Layer.hpp"
+#include "../include/Network.hpp"
+
 
 /*
 0   1   2   3...m
@@ -70,18 +71,35 @@ void Network::calculateErrors(double desiredOutput){
 
     //calculate the last node's error
     double lastLayerError = network[network.size()-1].outputs(0,0)-desiredOutput;
+    cout<<lastLayerError<<endl;
 
     network[network.size()-1].lastLayerErrors.diagonal() << lastLayerError;
+    cout<<network[network.size()-1].lastLayerErrors.diagonal()<<endl;
 
     //initializes the last hidden layer errors
-    network[network.size()-2].hiddenLayerErrors.diagonal() << network[network.size()-1].weights.transpose() * network[network.size()-1].lastLayerErrors.diagonal();
+    cout<<network[network.size()-2].hiddenLayerErrors.diagonal()<<endl;
 
+    //double sigmoidDerivative = output*(1-output);
+    network[network.size()-2].hiddenLayerErrors.diagonal() <<  network[network.size()-1].weights.transpose()*network[network.size()-1].lastLayerErrors.diagonal();
+    cout<<network[network.size()-2].hiddenLayerErrors.diagonal()<<endl;
+
+    /*
+        0
+        0
+        0
+        0
+
+        1
+        
+        Formula for calculating error of layer l:
+        network[l+1].weights.transpose()*network[l+1].lastLayerErrors.diagonal();
+    */
 
     //calculate the hidden nodes' errors
-    for(int currentLayer = network.size()-1;currentLayer >= 1;currentLayer--){
+    for(int currentLayer = network.size()-2;currentLayer >= 1;currentLayer--){
 
         //MAKE SURE THIS WORKS - NOT TESTED
-        network[currentLayer-1].hiddenLayerErrors.diagonal() << network[currentLayer].weights.transpose() * network[currentLayer].hiddenLayerErrors.diagonal();
+        network[currentLayer-1].hiddenLayerErrors.diagonal() << network[currentLayer].hiddenLayerErrors.diagonal()*network[currentLayer].weights;
 
     }
 }
@@ -126,5 +144,5 @@ void Network::printNetworkWeights(){
     }
 
     cout<<"Network size: \n"<<network.size()<<" layers"<<endl<<endl;
-    cout<<"Number of hidden layers: \n"<<numberOfHiddenlayers<<" layers"<<endl<<endl;
+    cout<<"Number of hidden layers: \n"<<numberOfHiddenLayers<<" layers"<<endl<<endl;
 }

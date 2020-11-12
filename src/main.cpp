@@ -17,24 +17,31 @@ using namespace std;
 */
 
 int main(){
-    /*Network *net = new Network(3,3,5);
+    Network *net = new Network();
 
     MatrixXd inputs = MatrixXd::Constant(5,1,1);
 
-    net->feedForward(inputs);
+    net->feedForward(inputs,true);
 
-    net->calculateErrors(1.0);
+    //net->calculateErrors(1.0);
 
-    DiagonalMatrix<double, 3> m(1,2,3);
+    MatrixXd mat = MatrixXd::Constant(3,3,1);
+    MatrixXd mat2 = MatrixXd::Random(3,3);
 
-    VectorX<double> vec(3);
+    cout<<mat2<<endl<<endl<<mat2-mat<<endl<<endl;
 
-    vec<<1,2,2;
-    cout<<vec<<endl;
 
-    m.diagonal()<<vec;
- 
-    cout<<m.diagonal()<<endl*/
+    // MatrixXd weights(2,3);
 
-    return 0; 
+    // weights << 1,2,3,4,5,6;
+
+    // DiagonalMatrix<double,2> diag;
+
+    // diag.diagonal() << 1,2;
+
+    // cout<<diag.diagonal().transpose()<<endl;
+    // cout<<weights<<endl;
+    // cout<<diag.diagonal().transpose()*weights<<endl;
+
+    return 0;
 }
