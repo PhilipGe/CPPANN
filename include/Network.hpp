@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <eigen/Eigen/Dense>
-#include "../include/Properties.hpp"
 #include "../include/Layer.hpp"
 
 
@@ -27,7 +26,8 @@ class Network{
         double feedForward(MatrixXd inputs, bool print = false);
 
         //BACKPROPOGATION
-        MatrixXd matrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
+        MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
+        MatrixXd horizontalMatrixOfOnes = MatrixXd::Constant(1,nodesPerLayer,1);
         
         void calculateErrors(double desiredOutput);
         void calculateNonIndividualDerivatives();
@@ -35,5 +35,6 @@ class Network{
 
         //DEBUGGING
         void printNetworkWeights();
+        void printNetworkOutputs();
 };
 

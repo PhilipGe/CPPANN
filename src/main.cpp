@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/Layer.hpp"
 #include "../include/Network.hpp"
+#include <chrono> 
 #include <math.h>
 
 using namespace std;
@@ -19,29 +20,21 @@ using namespace std;
 int main(){
     Network *net = new Network();
 
-    MatrixXd inputs = MatrixXd::Constant(5,1,1);
+    MatrixXd inputs(4,1);
 
-    net->feedForward(inputs,true);
+    inputs << 1,-1,2,5;
 
-    //net->calculateErrors(1.0);
+    net->feedForward(inputs);
+    net->printNetworkWeights();
 
-    MatrixXd mat = MatrixXd::Constant(3,3,1);
-    MatrixXd mat2 = MatrixXd::Random(3,3);
+    srand(1000);
+    for(int i = 0;i<10000;i++){
+        net->calculateErrors(-0.0324);
+    }
 
-    cout<<mat2<<endl<<endl<<mat2-mat<<endl<<endl;
-
-
-    // MatrixXd weights(2,3);
-
-    // weights << 1,2,3,4,5,6;
-
-    // DiagonalMatrix<double,2> diag;
-
-    // diag.diagonal() << 1,2;
-
-    // cout<<diag.diagonal().transpose()<<endl;
-    // cout<<weights<<endl;
-    // cout<<diag.diagonal().transpose()*weights<<endl;
+    net->printNetworkWeights();
+    double output = net->feedForward(inputs);
+    cout<<output<<endl;
 
     return 0;
 }

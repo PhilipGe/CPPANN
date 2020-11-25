@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../include/Layer.hpp"
 #include "../include/Network.hpp"
+#include "../include/Properties.hpp"
+
 
 
 /*
@@ -22,6 +24,9 @@ ________________________________________________________________________________
 //after you costruct the network, look into whether or not having a vector of pointers vs a vector of actual functions is better
 Network::Network(){
     
+    //initializes the input layer (the only attributes it contains are the inputs)
+    network.push_back(*(new Layer(numberOfInputs,0)));
+
     //initializes first hidden layer: each node has as many weights as there are inputs
     network.push_back(*(new Layer(nodesPerLayer,numberOfInputs)));
 
@@ -43,22 +48,22 @@ ____________
 
 double Network::feedForward(MatrixXd inputs, bool print){
 
-    if(inputs.rows() != network[0].weights.cols()){
+    if(inputs.rows() != network[1].weights.cols()){
         throw invalid_argument("Input matrix size does not match network's input dimensions");
     }
 
     //feeds forward inputs through first layer which defines output matrix of that layer
-    network[0].feedForward(inputs);
+    network[0].outputs = inputs;
     if (print) cout<<"Layer 0 outputs: \n"<<network[0].outputs<<endl<<endl;
 
     //feeds forward outputs of first layer through the network (accesses previous layer's outputs and feeds them into current layer, repeats until the end)
-    for(int i = 1;i < numberOfHiddenLayers+1;i++){
+    for(int i = 1;i < numberOfHiddenLayers+2;i++){
         network[i].feedForward(network[i-1].outputs);
         if (print) cout<<"Layer "<<i<<" outputs: \n"<<network[i].outputs<<endl<<endl;
     }
 
     //returns output value of last layer output matrix (1x1 matrix)
-    return network[numberOfHiddenLayers].outputs(0,0);
+    return network[numberOfHiddenLayers+1].outputs(0,0);
 }
 
 
@@ -69,39 +74,63 @@ _____________________________________________________________________________
 */
 void Network::calculateErrors(double desiredOutput){
 
-    //calculate the last node's error
+    //calculate the OUTPUT LAYER error
     double lastLayerError = network[network.size()-1].outputs(0,0)-desiredOutput;
-    cout<<lastLayerError<<endl;
 
+    //input output node's error into Diagonal Matrix that stores that error
     network[network.size()-1].lastLayerErrors.diagonal() << lastLayerError;
-    cout<<network[network.size()-1].lastLayerErrors.diagonal()<<endl;
 
-    //initializes the last hidden layer errors
-    cout<<network[network.size()-2].hiddenLayerErrors.diagonal()<<endl;
+    //Calculates derivatives of the weights in that node based on that error
+    network[network.size()-1].derivatives = lastLayerError*network[network.size()-2].outputs.transpose();
 
-    //double sigmoidDerivative = output*(1-output);
-    network[network.size()-2].hiddenLayerErrors.diagonal() <<  network[network.size()-1].weights.transpose()*network[network.size()-1].lastLayerErrors.diagonal();
-    cout<<network[network.size()-2].hiddenLayerErrors.diagonal()<<endl;
+    //Updates the weights of the output node
+    network[network.size()-1].weights -= network[network.size()-1].derivatives * learningSpeed;
 
-    /*
-        0
-        0
-        0
-        0
+    //initializes the LAST HIDDEN LAYER errors by
+    //(1) Calculating the sigmoid derivative of all of the outputs of the last hidden layer
+    MatrixXd sigmoidDerivative = (verticalMatrixOfOnes - network[network.size()-2].outputs).cwiseProduct(network[network.size()-2].outputs);
 
-        1
-        
-        Formula for calculating error of layer l:
-        network[l+1].weights.transpose()*network[l+1].lastLayerErrors.diagonal();
-    */
+    //(2) Multiplying the weights stored in the last layer by the diagonal matrix of the errors of the last layer
+    MatrixXd summation = network[network.size()-1].lastLayerErrors*network[network.size()-1].weights;
+
+    //(3) Multiplying the sigmoid derivative by the summation and inputing it into the diagonal of the error matrix of the last hidden layer 
+    network[network.size()-2].hiddenLayerErrors.diagonal()<<sigmoidDerivative.cwiseProduct(summation.transpose());
+    
+    //(4) Now that the errors of this layer are calculated, we can calculate the derivative by multiplying the diagonal of the error 
+    //    by the out puts of the previous layer
+    network[network.size()-2].derivatives = network[network.size()-2].hiddenLayerErrors.diagonal()*network[network.size()-3].outputs.transpose();
 
     //calculate the hidden nodes' errors
-    for(int currentLayer = network.size()-2;currentLayer >= 1;currentLayer--){
+    for(int currentLayer = network.size()-3;currentLayer >= 1;currentLayer--){
 
-        //MAKE SURE THIS WORKS - NOT TESTED
-        network[currentLayer-1].hiddenLayerErrors.diagonal() << network[currentLayer].hiddenLayerErrors.diagonal()*network[currentLayer].weights;
+        //cout<<"1"<<endl;
+        //(1) Calculating the sigmoid derivative of all of the outputs of the current layer
+        sigmoidDerivative = (verticalMatrixOfOnes - network[currentLayer].outputs).cwiseProduct(network[currentLayer].outputs);
 
+        //cout<<"2"<<endl;
+        //(2a) Multiplying the weights stored in the next layer by the diagonal matrix of the errors of the next layer
+        MatrixXd temp;
+        temp = network[currentLayer+1].hiddenLayerErrors*network[currentLayer+1].weights;
+        //(2b) Getting the sums of the rows and putting it into a seperate matrix
+        MatrixXd summation(nodesPerLayer,1);
+        summation << temp.row(0).sum(),temp.row(1).sum(),temp.row(2).sum();
+
+        //cout<<"3"<<endl;
+        //(3) Multiplying the sigmoid derivative by the summation and inputing it into the diagonal of the error matrix of the current layer 
+        MatrixXd errors(nodesPerLayer, 1);
+        errors << sigmoidDerivative.cwiseProduct(summation);
+        network[currentLayer].hiddenLayerErrors.diagonal()<< errors;
+
+        //cout<<"4"<<endl;
+        //(4) Now that the errors are calculated, we can multiply the error vector by the transposed output vector to create a matrix
+        //    that had the same dimensions as the weight matrix. Each value will be a derivative to its corresponding weight
+        network[currentLayer].derivatives = errors*network[currentLayer-1].outputs.transpose();
+
+        //cout<<"5"<<endl;
+        //(5) Once we have the derivatives, we can multiply them by the scalar learning rate and subract them from the weights
+        network[currentLayer].weights -= network[currentLayer].derivatives * learningSpeed;
     }
+
 }
 
 //This method can efficiently calculate the average derivatives of an entire layer, however, it will not calculate the individual derivatives of that layer
@@ -141,6 +170,16 @@ void Network::printNetworkWeights(){
 
     for(unsigned int i = 1;i < network.size();i++){
         cout<<"Layer " << i <<" Weights:\n"<<network[i].weights<<endl<<endl;
+    }
+
+    cout<<"Network size: \n"<<network.size()<<" layers"<<endl<<endl;
+    cout<<"Number of hidden layers: \n"<<numberOfHiddenLayers<<" layers"<<endl<<endl;
+}
+
+//print network's outputs
+void Network::printNetworkOutputs(){
+    for(unsigned int i = 0;i < network.size();i++){
+        cout<<"Layer " << i << " Outputs:\n"<<network[i].outputs<<endl<<endl;
     }
 
     cout<<"Network size: \n"<<network.size()<<" layers"<<endl<<endl;
