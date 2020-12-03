@@ -2,9 +2,9 @@
 
 class Properties {
 
-    public:
+        public:
         static const int numberOfHiddenLayers = 3;
-        static const int nodesPerLayer = 3;
+        static const int nodesPerLayer = 4;
         static const int numberOfInputs = 3;
-        static constexpr double learningSpeed = 0.011;
+        static constexpr double learningSpeed = 0.01;
 };

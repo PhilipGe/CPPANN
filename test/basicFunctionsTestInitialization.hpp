@@ -38,9 +38,9 @@ Network * TestInitialization::createTestNetwork(){
         MatrixXd& currentLayerWeights = net->network[i+1].weights;
 
         if(currentLayerWeights.cols() != testWeights[i].cols() || currentLayerWeights.rows() != testWeights[i].rows()){
-            cout<< "Layer " << i+1 << " test weight matrix proportions do not match initial network's layer" << i+1 << "weight matrix proportions"<<endl;
+            cout<< "Layer " << i+1 << " test weight matrix proportions do not match initial network's layer " << i+1 << " weight matrix proportions"<<endl;
             cout<< "Automatic proportions: COLUMNS - " << currentLayerWeights.cols() << " ROWS - " << currentLayerWeights.rows()<<endl;
-            cout<< "Given proportions: COLUMNS - " << testWeights[i].cols() << " ROWS - " << testWeights[i].rows()<<endl;
+            cout<< "    Given proportions: COLUMNS - " << testWeights[i].cols() << " ROWS - " << testWeights[i].rows()<<endl;
             throw invalid_argument("Invalid Argument");
         }
         net->network[i+1].weights = testWeights[i];

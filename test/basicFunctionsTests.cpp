@@ -2,12 +2,22 @@
 #include <eigen/Eigen/Dense>
 #include "../src/Layer.cpp"
 #include "../src/Network.cpp"
-#include "TestInitialization.hpp"
+#include "basicFunctionsTestInitialization.hpp"
 #include <limits>
+#include <eigen/Eigen/Dense>
+#include "../include/Trainer.hpp"
 
 typedef std::numeric_limits< double > dbl;
 
-TEST (network, feedForward){
+TEST (network, checkFeedForwardOutputs){
+
+    /*PROPERTIES:
+    public:
+        static const int numberOfHiddenLayers = 3;
+        static const int nodesPerLayer = 3;
+        static const int numberOfInputs = 3;
+        static constexpr double learningSpeed = 0.01;
+    */
 
     //initializes a test network through static functions in TestInitialization.h
     TestInitialization::createTestNetwork();
@@ -57,7 +67,7 @@ TEST (network, checkErrors){
     inputs << 0.5,-0.5,0;
 
     double desiredOutput = 1;
-    net->calculateErrors(inputs, desiredOutput);
+    net->backpropogate(inputs, desiredOutput);
     
     double approximationError = 0.00000000000000000001;
     vector<MatrixXd> errors;
@@ -87,6 +97,7 @@ TEST (network, checkErrors){
         EXPECT_NEAR(net->network[i].hiddenLayerErrors.diagonal().sum(), errors[i].sum(),approximationError);
     }    
 }
+
 
 int main(int argc, char **argv){
     ::testing::InitGoogleTest(&argc,argv);

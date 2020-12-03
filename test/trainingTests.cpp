@@ -1,27 +1,16 @@
-#include <iostream>
-#include "../include/Layer.hpp"
-#include "../include/Network.hpp"
+#include <gtest/gtest.h>
+#include <eigen/Eigen/Dense>
+#include "../src/Layer.cpp"
+#include "../src/Network.cpp"
+#include "basicFunctionsTestInitialization.hpp"
+#include <limits>
+#include <eigen/Eigen/Dense>
 #include "../include/Trainer.hpp"
-#include <chrono> 
-#include <math.h>
 
-using namespace std;
+TEST (trials, one){
 
-/*
-0   1   2   3...m
-------------------
-0
-0   0   0   0...
-0   0   0   0...0
-0   0   0   0...
-0
-
-*/
-
-int main(){
     srand(100);
     Network *net = new Network();
-    
 
     MatrixXd inputs1(3,1);
     inputs1 << 0, 0, 0;
@@ -48,7 +37,7 @@ int main(){
     inputs.push_back(inputs5);
     inputs.push_back(inputs6);
     inputs.push_back(inputs7);
-    
+    inputs.push_back(inputs8);
 
     vector<double> desiredOutputs {1,1,-1,-1,-1,-1,1,1};
 
@@ -56,16 +45,16 @@ int main(){
         cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i])<<" Desired: "<<desiredOutputs[i]<<endl;
     }
 
-    Trainer::train(net,inputs,desiredOutputs,50000,true);
+    Trainer::train(net,inputs,desiredOutputs,50000);
 
     cout<<endl;
-
-    desiredOutputs.push_back(1);
-    inputs.push_back(inputs8);
 
     for(int i =0;i<inputs.size();i++){
         cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i])<<" Desired: "<<desiredOutputs[i]<<endl;
     }
-    
-    return 0;
+}
+
+int main(int argc, char **argv){
+    ::testing::InitGoogleTest(&argc,argv);
+    return RUN_ALL_TESTS();
 }

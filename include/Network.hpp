@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <eigen/Eigen/Dense>
@@ -29,9 +30,12 @@ class Network{
         MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
         MatrixXd horizontalMatrixOfOnes = MatrixXd::Constant(1,nodesPerLayer,1);
         
-        void calculateErrors(MatrixXd testInput, double desiredOutput);
+        vector<MatrixXd> backpropogate(MatrixXd testInput, double desiredOutput);
         void calculateNonIndividualDerivatives();
-        void updateWeights();
+        void updateWeights(vector<MatrixXd> derivatives);
+
+        //TRAINING
+        void train(vector<MatrixXd> testInputs, vector<double> desiredOutputs, int numberOfIterations);
 
         //DEBUGGING
         void printNetworkWeights();

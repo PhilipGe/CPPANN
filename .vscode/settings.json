@@ -9,7 +9,9 @@
         "iostream": "cpp",
         "ostream": "cpp",
         "chrono": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "dense": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
