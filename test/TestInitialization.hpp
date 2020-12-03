@@ -15,7 +15,7 @@ Network * TestInitialization::createTestNetwork(){
     int numberOfHiddenLayers = 3;
     int nodesPerLayer = 3;
     int numberOfInputs = 9;
-    int learningSpeed = 1;
+    double learningSpeed = 1;
 
     vector<MatrixXd> testWeights;
 
@@ -45,5 +45,6 @@ Network * TestInitialization::createTestNetwork(){
         }
         net->network[i+1].weights = testWeights[i];
     }
+
     return net;
 }

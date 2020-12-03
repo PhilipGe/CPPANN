@@ -1,0 +1,5 @@
+.Archive/
+bin/
+build/
+googletest/
+output/

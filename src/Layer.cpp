@@ -19,10 +19,15 @@ Layer::Layer(int thisLayerNodes, int previousLayerNodes, bool test, int weightCo
 //the number of outputs is equal to the number of nodes in the previous layer
 //this function returns the outputs of this layer based on the outputs of the previous layer
     //it does so by taking the product
-MatrixXd Layer::feedForward(MatrixXd previous_outputs){
+MatrixXd Layer::feedForward(MatrixXd previous_outputs, bool lastLayer){
     productSums = weights*previous_outputs;
 
-    outputs = sigmoid(productSums);
+    if(!lastLayer){
+        outputs = sigmoid(productSums);
+    }else{
+        outputs = productSums;
+    }
+
     return outputs;
 }
 

@@ -25,7 +25,7 @@ class Layer{
         Layer(int thisLayerNodes, int previousLayerNodes, bool test = false, int weightConstant = 0);
 
         //FEED FORWARD
-        MatrixXd feedForward(MatrixXd);
+        MatrixXd feedForward(MatrixXd, bool lastLayer = false);
         MatrixXd outputs;
         MatrixXd productSums;
         MatrixXd weights;

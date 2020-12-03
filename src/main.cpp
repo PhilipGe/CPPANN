@@ -20,16 +20,15 @@ using namespace std;
 int main(){
     Network *net = new Network();
 
-    MatrixXd inputs(4,1);
+    MatrixXd inputs(3,1);
 
-    inputs << 1,-1,2,5;
+    inputs << -0.5,0.5,1;
 
-    net->feedForward(inputs);
     net->printNetworkWeights();
 
     srand(1000);
     for(int i = 0;i<10000;i++){
-        net->calculateErrors(-0.0324);
+        net->calculateErrors(inputs, 5);
     }
 
     net->printNetworkWeights();

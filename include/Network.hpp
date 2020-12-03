@@ -15,7 +15,7 @@ class Network{
         int numberOfHiddenLayers = Properties::numberOfHiddenLayers;
         int nodesPerLayer = Properties::nodesPerLayer;
         int numberOfInputs = Properties::numberOfInputs;
-        int learningSpeed = Properties::learningSpeed;
+        double learningSpeed = Properties::learningSpeed;
 
         //INITIALIZATION 
         vector<Layer> network;
@@ -29,12 +29,13 @@ class Network{
         MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
         MatrixXd horizontalMatrixOfOnes = MatrixXd::Constant(1,nodesPerLayer,1);
         
-        void calculateErrors(double desiredOutput);
+        void calculateErrors(MatrixXd testInput, double desiredOutput);
         void calculateNonIndividualDerivatives();
         void updateWeights();
 
         //DEBUGGING
         void printNetworkWeights();
         void printNetworkOutputs();
+        void printNetworkErrors();
 };
 
