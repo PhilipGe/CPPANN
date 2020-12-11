@@ -25,8 +25,11 @@ Network * TestInitialization::createTestNetwork(){
     layerTwoWeights << 9,8,7,6,5,4,3,2,1;
     MatrixXd layerThreeWeights(3,3);
     layerThreeWeights << -1,2,-3,4,-5,6,-7,8,-9;
-    MatrixXd layerFourWeights(1,3);
-    layerFourWeights << 4,-5,6;
+    MatrixXd layerFourWeights(4,3);
+    layerFourWeights <<   1, -2,  3,
+                         -4,  5, -6,
+                          7, -8,  9,
+                        -10, 11,-12;
 
     testWeights.push_back(layerOneWeights);
     testWeights.push_back(layerTwoWeights);

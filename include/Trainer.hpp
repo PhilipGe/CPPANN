@@ -7,6 +7,6 @@
 class Trainer{
 
     public:
-    static void train(Network * net, vector<MatrixXd> testInputs, vector<double> desiredOutputs, int numberOfIterations, bool track = false);   
+    static void train(Network * net, vector<MatrixXd> testInputs, vector<MatrixXd> desiredOutputs, int numberOfIterations, bool track = false);   
 
 };

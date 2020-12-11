@@ -7,7 +7,8 @@
 Layer::Layer(int thisLayerNodes, int previousLayerNodes, bool test, int weightConstant) {
     this->thisLayerNodes = thisLayerNodes;
     this->previousLayerNodes = previousLayerNodes;
-    
+
+    //the rows represent this layer's nodes. The columns represent the previous layer's nodes    
     if(!test){
         weights = MatrixXd::Random(thisLayerNodes, previousLayerNodes);
         derivatives = MatrixXd::Constant(thisLayerNodes, previousLayerNodes,0);

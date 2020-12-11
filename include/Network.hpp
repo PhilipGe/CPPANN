@@ -16,6 +16,7 @@ class Network{
         int numberOfHiddenLayers = Properties::numberOfHiddenLayers;
         int nodesPerLayer = Properties::nodesPerLayer;
         int numberOfInputs = Properties::numberOfInputs;
+        int numberOfOutputs = Properties::numberOfOutputs;
         double learningSpeed = Properties::learningSpeed;
 
         //INITIALIZATION 
@@ -30,7 +31,7 @@ class Network{
         MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
         MatrixXd horizontalMatrixOfOnes = MatrixXd::Constant(1,nodesPerLayer,1);
         
-        vector<MatrixXd> backpropogate(MatrixXd testInput, double desiredOutput);
+        vector<MatrixXd> backpropogate(MatrixXd testInput, MatrixXd desiredOutput);
         void calculateNonIndividualDerivatives();
         void updateWeights(vector<MatrixXd> derivatives);
 

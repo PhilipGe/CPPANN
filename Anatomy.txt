@@ -1,0 +1,32 @@
+<b>Abstract Network Structure</b>
+
+If the Properties class looked like this:
+
+class Properties {
+
+        public:
+        static const int numberOfHiddenLayers = 3;
+        static const int nodesPerLayer = 5;
+        static const int numberOfInputs = 7;
+        static constexpr double learningSpeed = 0.01;
+};
+
+The Network would loop like this:
+
+0
+0       0       0       0
+0       0       0       0
+0       0       0       0       0
+0       0       0       0
+0       0       0       0
+0
+
+Each 0 is a node. The Network returns one output by default
+-----------------------------------------------------------
+Layer Anatomy
+
+To create multiple outputs:
+
+Change last layer structure
+Fix feed forward to account for new structure
+Fix backpropogation to account for new structure
