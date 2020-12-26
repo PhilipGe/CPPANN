@@ -49,22 +49,26 @@ int main(){
     inputs.push_back(inputs6);
     inputs.push_back(inputs7);
     
+    
 
-    vector<double> desiredOutputs {1,1,-1,-1,-1,-1,1,1};
+    vector<MatrixXd> desiredOutputs;
+
+    for(int i = 0; i<16;i++){
+        desiredOutputs.push_back(MatrixXd::Constant(16,1,0));
+        desiredOutputs[i](3,0) = 1;
+    }
 
     for(int i =0;i<inputs.size();i++){
-        cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i])<<" Desired: "<<desiredOutputs[i]<<endl;
+        cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i]).array().round().abs().transpose()<<" Desired: "<<desiredOutputs[i].transpose()<<endl;
     }
 
     Trainer::train(net,inputs,desiredOutputs,50000,true);
 
-    cout<<endl;
-
-    desiredOutputs.push_back(1);
-    inputs.push_back(inputs8);
+    // desiredOutputs.push_back();
+    // // inputs.push_back(inputs8);
 
     for(int i =0;i<inputs.size();i++){
-        cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i])<<" Desired: "<<desiredOutputs[i]<<endl;
+        cout<<"Input: "<<inputs[i].transpose()<<" Output: "<<net->feedForward(inputs[i]).array().round().abs().transpose()<<" Desired: "<<desiredOutputs[i].transpose()<<endl;
     }
     
     return 0;

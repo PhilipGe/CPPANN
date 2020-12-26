@@ -9,11 +9,15 @@ void Trainer::train(Network * net, vector<MatrixXd> testInputs, vector<MatrixXd>
     vector<MatrixXd> currentDerivatives;
     double numberOfTestInputs = testInputs.size();
 
+    if(testInputs.size() != desiredOutputs.size()){
+        throw invalid_argument("Test input vector and desired output vector sizes do not match");
+    }
+
     for(int i = 0;i < desiredOutputs.size()-1;i++){
-        if((desiredOutputs[i].rows() != net->network[net->network.size()-1].outputs.rows())){
-            if((desiredOutputs[i].cols() != net->network[net->network.size()-1].outputs.cols())){
-                throw invalid_argument("The 'desiredOutput' matrix " + tostring(i) + " does not match the expected number of outputs in the network");
-            }
+        if((desiredOutputs[i].rows() != net->network[net->network.size()-1].outputs.rows()) && (desiredOutputs[i].cols() != net->network[net->network.size()-1].outputs.cols())){
+            cout<<"Network Output Rows and Cols (as defined in Properties): "<<net->network[net->network.size()-1].outputs.cols()<<" "<<net->network[net->network.size()-1].outputs.rows()<<endl;
+            cout<<"                Given Desired Output Size Rows and Cols:"<<desiredOutputs[i].cols()<<" "<<desiredOutputs[i].rows()<<endl;
+            throw invalid_argument("The 'desiredOutput' matrix " + to_string(i) + " does not match the expected number of outputs in the network");
         }
     }
 

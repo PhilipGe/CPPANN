@@ -25,7 +25,7 @@ class Network{
         Network(bool test);
 
         //FEED FORWARD
-        double feedForward(MatrixXd inputs, bool print = false);
+        MatrixXd feedForward(MatrixXd inputs, bool print = false);
 
         //BACKPROPOGATION
         MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);

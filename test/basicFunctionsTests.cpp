@@ -9,7 +9,7 @@
 
 typedef std::numeric_limits< double > dbl;
 
-TEST (network, DISABLED_checkFeedForwardOutputs_OneTotalOutput){
+TEST (network, checkFeedForwardOutputs_OneTotalOutput){
 
     /*PROPERTIES:
     public:
@@ -27,7 +27,7 @@ TEST (network, DISABLED_checkFeedForwardOutputs_OneTotalOutput){
     inputs << 0.5,-0.5,0;
 
     //feed inputs through network
-    double actualOutput = net->feedForward(inputs);
+    MatrixXd actualOutput = net->feedForward(inputs);
 
     //check outputs of network
     double error = 0.00000000000000000001;
@@ -77,7 +77,7 @@ TEST (network, checkFeedForwardOutputs_FourTotalOutput){
     inputs << 0.5,-0.5,0;
 
     //feed inputs through network
-    double actualOutput = net->feedForward(inputs);
+    // double actualOutput = net->feedForward(inputs);
 
     //check outputs of network
     double error = 0.00000001;

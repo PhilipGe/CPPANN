@@ -12,6 +12,7 @@ Layer::Layer(int thisLayerNodes, int previousLayerNodes, bool test, int weightCo
     if(!test){
         weights = MatrixXd::Random(thisLayerNodes, previousLayerNodes);
         derivatives = MatrixXd::Constant(thisLayerNodes, previousLayerNodes,0);
+        outputs = MatrixXd::Constant(thisLayerNodes, 1,0);
     }else{
         weights = MatrixXd::Constant(thisLayerNodes, previousLayerNodes, weightConstant);
     }
