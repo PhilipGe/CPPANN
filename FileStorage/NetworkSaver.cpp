@@ -1,6 +1,8 @@
+#pragma once
 #include <sqlite3.h>
 #include <iostream>
 #include <string>
+#include <sys/stat.h>
 #include "../include/Properties.hpp"
 #include "../include/Network.hpp"
 #include "../include/Layer.hpp"
@@ -10,7 +12,22 @@ using namespace std;
 class NetworkSaver {
 
     public:
-        static void saveNetwork(const char* databaseAddress,  Network* network){
+        static void SaveNetwork(const char* databaseAddress,  Network* network,  bool override = false, bool print = false){
+
+
+            //check to see if database exists already
+            struct stat buffer;
+            if((stat (databaseAddress, &buffer) == 0) && !override){
+                string userInput;
+                cout<<"A database at the location "<<databaseAddress<<" exists. Would you like to override that database? (Y/N)";
+                cin>>userInput;
+                if(userInput != "Y" || userInput != "y")
+                    cout<<"Terminating Program"<<endl;
+                    throw exception();
+            }
+
+            remove(databaseAddress);
+
             sqlite3* db;
             char* err;
 
@@ -22,6 +39,7 @@ class NetworkSaver {
             double currentWeight;
             int success;
 
+            cout<<"Saving Network to "<<databaseAddress<<endl;
             for(int layer = 1;layer < layers.size();layer++){
 
                 //create table for layer
@@ -33,7 +51,7 @@ class NetworkSaver {
 
                 stringOfWeights += "node" + to_string(layers[layer].weights.cols()-1) + " DOUBLE)";
                 command = "CREATE TABLE LAYER" + to_string(layer) + stringOfWeights;
-                cout<<command<<endl;
+                if(print) cout<<command<<endl;
                 success = sqlite3_exec(db, (command).c_str(), NULL, NULL, &err);
 
                 if(success != SQLITE_OK)
@@ -52,7 +70,7 @@ class NetworkSaver {
                     stringOfWeights += to_string(currentWeight) + ")";
 
                     command = "INSERT INTO LAYER"+to_string(layer)+" VALUES " + stringOfWeights;
-                    cout<<command<<endl;
+                    if(print)cout<<command<<endl;
                     success = sqlite3_exec(db, (command).c_str(), NULL,NULL,&err);
 
                     if(success != SQLITE_OK)
@@ -66,7 +84,7 @@ class NetworkSaver {
                         cout<<"Error: "<<err<<endl;
 
             command = "INSERT INTO PROPERTIES VALUES (" + to_string(Properties::numberOfHiddenLayers) + ","+ to_string(Properties::nodesPerLayer) +","+ to_string(Properties::numberOfInputs) +","+ to_string(Properties::numberOfOutputs) +")";
-            cout<<command<<endl;
+            //cout<<command<<endl;
             sqlite3_exec(db, (command).c_str(), NULL,NULL,&err);
             if(success != SQLITE_OK)
                         cout<<"Error: "<<err<<endl;
@@ -81,6 +99,7 @@ class NetworkSaver {
 
             Network * net = new Network();
 
+            cout<<"Getting Network from "<<databaseAddress<<endl;
             sqlite3_open(databaseAddress, &db);
             sqlite3_prepare_v2(db, "SELECT * FROM PROPERTIES", -1, &stmt,0);
 
@@ -125,11 +144,13 @@ class NetworkSaver {
             sqlite3_prepare_v2(db, ("SELECT * FROM LAYER" + to_string(numberOfHiddenLayers+1)).c_str(), -1, &stmt,0);
             for(int node = 0;node < numberOfOutputs;node++){
                 sqlite3_step(stmt);
-                for(int incomingNode;incomingNode < nodesPerLayer; incomingNode++){
+                for(int incomingNode = 0;incomingNode < nodesPerLayer; incomingNode++){
                     net->network[numberOfHiddenLayers+1].weights(node,incomingNode) = sqlite3_column_double(stmt,incomingNode);
                 }
             }
 
+            sqlite3_close(db);
+            
             return net;
         }
 };

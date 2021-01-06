@@ -31,7 +31,8 @@ class Network{
         MatrixXd verticalMatrixOfOnes = MatrixXd::Constant(nodesPerLayer,1,1);
         MatrixXd horizontalMatrixOfOnes = MatrixXd::Constant(1,nodesPerLayer,1);
         
-        vector<MatrixXd> backpropogate(MatrixXd testInput, MatrixXd desiredOutput);
+        vector<MatrixXd> backpropogate(MatrixXd testInput, MatrixXd desiredOutput); //returns vector of weight derivatives
+        void backpropogateOptimized(MatrixXd testInput, MatrixXd desiredOutput, double averageFactor, double learningSpeed);
         void calculateNonIndividualDerivatives();
         void updateWeights(vector<MatrixXd> derivatives);
 

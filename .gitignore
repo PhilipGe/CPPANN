@@ -4,3 +4,6 @@ build/
 googletest/
 output/
 MNIST Processing/drawnImages
+MNIST Processing/MNISTTrainingDatabases
+MNIST Processing/MNISTTrialThree
+MNIST Processing/MNISTTrialTwo
