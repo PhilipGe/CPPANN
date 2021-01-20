@@ -3,7 +3,8 @@ bin/
 build/
 googletest/
 output/
-MNIST Processing/drawnImages
-MNIST Processing/MNISTTrainingDatabases
-MNIST Processing/MNISTTrialThree
-MNIST Processing/MNISTTrialTwo
+MNIST_Processing/drawnImages
+MNIST_Processing/MNISTTrainingDatabases
+MNIST_Processing/MNISTTrialFour
+MNIST_Processing/MNISTTrialThree
+MNIST_Processing/MNISTTrialTwo
