@@ -9,7 +9,7 @@
 
 typedef std::numeric_limits< double > dbl;
 
-TEST (network, checkFeedForwardOutputs_OneTotalOutput){
+TEST (network, DISABLED_checkFeedForwardOutputs_OneTotalOutput){
 
     /*PROPERTIES:
     public:

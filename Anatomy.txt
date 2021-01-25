@@ -24,6 +24,10 @@ The Network would loop like this:
 Each 0 is a node. The Network returns one output by default
 -----------------------------------------------------------
 Layer Anatomy
+        A weight matrix exists in every layer.
+        The rows of the matrix corespond to the number of nodes in that layer
+        The columns of the matrix correspond to the number of nodes in the previous layer
+        *Note: the input layer also has a weight matrix that is never used (it has zero columns but must be accounted for when iterating over weights)
 
 To create multiple outputs:
 

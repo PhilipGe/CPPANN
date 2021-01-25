@@ -1,5 +1,5 @@
 #include <iostream>
-#include "MNISTTrainerV2.hpp"
+#include "support/MNISTTrainerV2.hpp"
 #include <eigen/Eigen/Dense>
 #include "../include/Network.hpp"
 #include "../FileStorage/NetworkSaver.cpp"
@@ -12,8 +12,8 @@ using namespace std;
 
 int main(){
     
-    string saveToDatabaseAddress = "MNISTTrialFour";
-
+    string saveToDatabaseAddress = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialEight";
+    
     MNISTTrainerV2::TrainOnMNIST(saveToDatabaseAddress);
     
     return 0;
