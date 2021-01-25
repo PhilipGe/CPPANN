@@ -1,3 +1,4 @@
+#pragma once
 #include <sqlite3.h>
 #include <iostream>
 #include <string>
@@ -11,7 +12,6 @@ using namespace std;
 
 
 void NetworkSaver::SaveNetwork(const char* databaseAddress,  Network* network,  bool override, bool print){
-
 
             //check to see if database exists already
             struct stat buffer;

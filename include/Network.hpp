@@ -3,6 +3,7 @@
 #include <vector>
 #include <eigen/Eigen/Dense>
 #include "../include/Layer.hpp"
+#include "../include/Properties.hpp"
 
 
 using namespace Eigen;
@@ -35,6 +36,7 @@ class Network{
         void backpropogateOptimized(MatrixXd testInput, MatrixXd desiredOutput, double averageFactor, double learningSpeed);
         void calculateNonIndividualDerivatives();
         void updateWeights(vector<MatrixXd> derivatives);
+        void randomizeWeightsUniformDistribution();
 
         //TRAINING
         void train(vector<MatrixXd> testInputs, vector<double> desiredOutputs, int numberOfIterations);
@@ -43,5 +45,6 @@ class Network{
         void printNetworkWeights();
         void printNetworkOutputs();
         void printNetworkErrors();
+        double weightSum();
 };
 

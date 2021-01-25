@@ -154,6 +154,8 @@ TEST (network, checkErrors_FourOutputs){
     Network *net = TestInitialization::net;
     double error = 0.00000001;
 
+    net->printNetworkWeights();
+
     MatrixXd inputs(3,1);
     inputs << 0.5,-0.5,0;
 
@@ -173,7 +175,7 @@ TEST (network, checkErrors_FourOutputs){
     layerTwoError << 0.0006093096371321019, 0.0051610525438491543, 0.016576182126409357;
     MatrixXd layerThreeError(3,1);
     layerThreeError << -20.0367358482, 2.03067747574, -0.152609831021;
-    MatrixXd layerFourError(1,1);
+    MatrixXd layerFourError(4,1);
     layerFourError<<-2.82341916853, 3.83278411846, -6.3421490684, 9.35151401834;
 
     errors.push_back(inputLayerErrors);

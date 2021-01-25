@@ -213,9 +213,25 @@ void MNISTTrainerV2::printTimeSignature(chrono::steady_clock::time_point current
     cout<<(((double)iterationNumber)/((double)totalNumberOfIterations))*100.0<<"% Trained | " << secondsSinceLastPercentage << "s | " << timeSignatureMinutes + timeSignatureSeconds <<" Minutes Elapsed"<<endl;
 }
 
-vector<MatrixXd> backpropogate(Network * net, MatrixXd testInput, double desiredOutput){
-    MatrixXd dOInMatrix = MatrixXd::Constant(1,1,desiredOutput);
-    return net->backpropogate(testInput, dOInMatrix);
+vector<MatrixXd> backpropogate(Network * net, MatrixXd testInput, MatrixXd desiredOutput){
+    vector<MatrixXd> derivatives = net->backpropogate(testInput, desiredOutput);
+    // for(int x = 0;x < derivatives.size();x++){
+    //     cout<<derivatives[x].cols()<<" "<<derivatives[x].rows()<<endl;
+    //     cout<<derivatives[x]<<endl;
+    // }
+    return derivatives;
+}
+
+MatrixXd getOutputMatrix(int output, int numberOfDifferentInputs = 10){
+    MatrixXd outputMatrix(numberOfDifferentInputs,1);
+    for(int i = 0;i < numberOfDifferentInputs;i++){
+        if(i == output)
+            outputMatrix(i,0) = 1;
+        else
+            outputMatrix(i,0) = 0;
+    }
+
+    return outputMatrix;
 }
 
 vector<MatrixXd> vectorAverage(vector<MatrixXd> d1,vector<MatrixXd> d2,vector<MatrixXd> d3,vector<MatrixXd> d4,vector<MatrixXd> d5){
@@ -233,11 +249,10 @@ vector<MatrixXd> vectorAverage(vector<MatrixXd> d1,vector<MatrixXd> d2,vector<Ma
 
 vector<MatrixXd> futureAverage(vector<future<vector<MatrixXd>>> &futureVector, vector<MatrixXd> weightsVector){ 
     vector<MatrixXd> result;
-    vector<MatrixXd> tempDerivatives;// = futureVector[0].get();
+    vector<MatrixXd> tempDerivatives;
     vector<MatrixXd> averageDerivatives;
 
     int batchSize = futureVector.size();
-
 
     for(int x = 0;x < weightsVector.size();x++){
         weightsVector[x] = weightsVector[x]-weightsVector[x]; //resets the values to 0 but maintains the correct dimensions
@@ -250,6 +265,8 @@ vector<MatrixXd> futureAverage(vector<future<vector<MatrixXd>>> &futureVector, v
     for(int i = 0;i < batchSize;i++){
         tempDerivatives = futureVector[i].get();
         for(int layer = 0;layer < averageDerivatives.size();layer++){
+            // cout<<tempDerivatives[layer].cols()<<" "<<tempDerivatives[layer].rows()<<endl;
+            // cout<<averageDerivatives[layer].cols()<<" "<<averageDerivatives[layer].rows()<<endl;
             averageDerivatives[layer] = averageDerivatives[layer] + tempDerivatives[layer];
         }
     }
@@ -259,12 +276,12 @@ vector<MatrixXd> futureAverage(vector<future<vector<MatrixXd>>> &futureVector, v
         for(int y = 0;y < averageDerivatives[layer].rows();y++){
             for(int x = 0;x < averageDerivatives[layer].cols();x++){
                 if(isnan(averageDerivatives[layer](y,x)))
-                    cout<<"NAN!"<<endl;
+                    {cout<<"NAN!"<<endl; throw exception();}
             }
         }
     }
     
-    
+    //cout<<averageDerivatives[0].cwiseEqual(tempDerivatives[0])<<endl;
 
     return averageDerivatives;
 }
@@ -294,13 +311,16 @@ void MNISTTrainerV2::TrainOnMNIST(string saveToDirectory, string getFrom, int co
     else{
         net = new Network();
         cout<<"Creating Network"<<endl;
-        NetworkSaver::SaveNetwork((saveToDirectory + "/Network" + to_string(count) + ".db").c_str(), net);
+        // net->printNetworkWeights();
+        // cout<<net->weightSum()<<endl;
+        // throw exception();
+        NetworkSaver::SaveNetwork((saveToDirectory + "/Network" + to_string(count) + ".db").c_str(), net,true);
         count++;
     }
 
     //(4) Set up training parameters
     int numberOfEpochs = 5;
-    batchSize = 100;
+    batchSize = 1000;
 
     int NUMBEROFIMAGES = 60000;
     int NUMBEROFBATCHES = NUMBEROFIMAGES/batchSize;
@@ -329,7 +349,7 @@ void MNISTTrainerV2::TrainOnMNIST(string saveToDirectory, string getFrom, int co
     for(int i = 0;i < batchSize;i++){
         image = readOneImageToMatrix(&imageFileStream)/255.0; //The 255 is there to normalize the data
         label = readOneLabel(&labelFileStream);
-        fVec.push_back(async(launch::async, backpropogate, netVec[i], image,label));
+        fVec.push_back(async(launch::async, backpropogate, netVec[i], image,getOutputMatrix(label)));
     }
 
     //(5) Train Network
@@ -339,21 +359,21 @@ void MNISTTrainerV2::TrainOnMNIST(string saveToDirectory, string getFrom, int co
         imageFileStream.seekg(0, ios::beg);
         labelFileStream.seekg(0, ios::beg);
 
-        for(int batchNumber = 0;batchNumber < 20;batchNumber++){
+        for(int batchNumber = 0;batchNumber < NUMBEROFBATCHES;batchNumber++){
 
             //initiate backpropogation for each image in the batch
             for(int i = 0;i < batchSize;i++){
                 image = readOneImageToMatrix(&imageFileStream)/255.0; //The 255 is there to normalize the data
                 label = readOneLabel(&labelFileStream);
-                fVec[i] = async(launch::async, backpropogate, netVec[i], image,label);
+                fVec[i] = async(launch::async, backpropogate, netVec[i], image,getOutputMatrix(label));
             }
 
             //get the average of the derivatives calculated
             vector<MatrixXd> dA = futureAverage(fVec, initialWeights);       
 
-            for(int layer = 0;layer < dA.size();layer++){
-                cout<<dA[layer]<<endl;
-            }        
+            // for(int layer = 0;layer < dA.size();layer++){
+            //     cout<<dA[layer]<<endl;
+            // }        
             
             //update the main network's weights with the derivative
             net->updateWeights(dA);
@@ -371,8 +391,8 @@ void MNISTTrainerV2::TrainOnMNIST(string saveToDirectory, string getFrom, int co
             if((iterationCount) % 3 == 0){
                 printTimeSignature(current, begin, iterationCount, totalNumberOfIterations);
                 current = chrono::steady_clock::now();
-                NetworkSaver::SaveNetwork((saveToDirectory + "/Network" + to_string(count) + ".db").c_str(), net, true,true);
-                count++;
+                // NetworkSaver::SaveNetwork((saveToDirectory + "/Network" + to_string(count) + ".db").c_str(), net);
+                // count++;
             }
         }
         

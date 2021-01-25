@@ -3,6 +3,8 @@
 #include "../include/Network.hpp"
 #include "../include/Properties.hpp"
 #include <string>
+#include <random>
+#include "../include/Properties.hpp"
 
 
 
@@ -39,8 +41,23 @@ Network::Network(){
     //initializes output layer: single node layer that has as many weights as there are nodes per hidden layer
     network.push_back(*(new Layer(numberOfOutputs,nodesPerLayer)));
 
+    randomizeWeightsUniformDistribution();
+
 }
 
+void Network::randomizeWeightsUniformDistribution(){
+    uniform_real_distribution<double> distribution(-1.0,1.0);
+    default_random_engine generator;
+    srand(time(NULL));
+
+    for(int layer = 0;layer < network.size();layer++){
+        for(int y = 0;y < network[layer].weights.rows();y++){
+            for(int x = 0;x < network[layer].weights.cols();x++){
+                network[layer].weights(y,x) = distribution(generator);
+            }
+        }
+    }
+}
 
 /*
 FEED FORWARD
@@ -257,7 +274,7 @@ void Network::calculateNonIndividualDerivatives(){
 void Network::updateWeights(vector<MatrixXd> derivatives){
 
     for(int i = 1;i<network.size();i++){ // i= 1 because the first layer does not have any weights. It is an input layer
-        network[i].weights -= derivatives[i-1];
+        network[i].weights = network[i].weights-(derivatives[i-1]*0.01);
     }
 
 }
@@ -316,4 +333,12 @@ void Network::printNetworkErrors(){
 
     cout<<"Network size: \n"<<network.size()<<" layers"<<endl<<endl;
     cout<<"Number of hidden layers: \n"<<numberOfHiddenLayers<<" layers"<<endl<<endl;
+}
+
+double Network::weightSum(){
+    double sum = 0;
+    for(int layer = 1;layer<network.size();layer++){
+        sum += network[layer].weights.sum();
+    }
+    return sum;
 }

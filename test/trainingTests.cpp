@@ -8,7 +8,7 @@
 #include "../include/Trainer.hpp"
 #include "../FileStorage/NetworkSaver.cpp"
 
-TEST (trials, DISABLED_one){
+TEST (trials, one){
 
     /*Properties:
     public:

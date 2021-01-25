@@ -21,16 +21,31 @@ add_library(
     FileStorage/NetworkSaver.hpp
 )
 
+add_library(
+    supporting
+    MNIST_Processing/support/MNISTTester.cpp
+    MNIST_Processing/support/MNISTTester.hpp
+    MNIST_Processing/support/MNISTTrainerV2.cpp
+    MNIST_Processing/support/MNISTTrainerV2.hpp
+)
+
 
 target_include_directories(Network PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_include_directories(File-Storage PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/FileStorage")
+target_include_directories(File-Storage PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/MNIST_Processing/support")
 
-add_subdirectory(MNIST_Processing)
+add_executable(MNIST MNIST_Processing/TestTrainer.cpp)
 
-add_subdirectory(googletest)
-include_directories(googletest/googletest/include src test)
-add_executable(basicFunctionsTests test/basicFunctionsTests.cpp)
-target_link_libraries(basicFunctionsTests PRIVATE gtest)
+target_link_libraries(MNIST PRIVATE sqlite3 pthread Network File-Storage supporting)
+
+# add_subdirectory(googletest)
+# include_directories(googletest/googletest/include src test)
+# add_executable(basicFunctionsTests test/basicFunctionsTests.cpp)
+# target_link_libraries(basicFunctionsTests PRIVATE gtest)
+
+# include_directories(googletest/googletest/include src FileStorage)
+# add_executable(trainingTests test/trainingTests.cpp src/Trainer.cpp)
+# target_link_libraries(trainingTests PRIVATE gtest sqlite3)
 
 # option(MAIN "Build driver (main.cpp)" ON)
 # option(TEST "Build basicTests (basicFunctionsTests.cpp)" ON)
