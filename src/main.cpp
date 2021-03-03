@@ -22,6 +22,18 @@ int main(){
     srand(100);
     Network *net = new Network();
     
+    MatrixXd mat(3,3);
+
+    mat << 1,2,3,4,5,6,7,8,9;
+
+    cout<<mat<<endl;
+
+    net->network[1].weights = mat;
+
+
+    cout<<net->network[1].getNodesWeightsMagnitudes()<<endl;
+
+    throw exception();
 
     MatrixXd inputs1(3,1);
     inputs1 << 0, 0, 0;

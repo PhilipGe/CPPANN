@@ -48,7 +48,7 @@ Network::Network(){
 void Network::randomizeWeightsUniformDistribution(){
     uniform_real_distribution<double> distribution(-1.0,1.0);
     default_random_engine generator;
-    srand(time(NULL));
+    generator.seed(time(NULL));
 
     for(int layer = 0;layer < network.size();layer++){
         for(int y = 0;y < network[layer].weights.rows();y++){
@@ -266,18 +266,54 @@ void Network::train(vector<MatrixXd> testInputs, vector<double> desiredOutputs, 
     }
 }
 
+void Network::constrainWeights(double maximumMagnitude){
+
+    bool adjust = false;
+    double biggestMag;
+
+    for(int layer = 1;layer < network.size();layer++){
+        biggestMag = network[layer].getNodesWeightsMagnitudes().maxCoeff();
+        if( biggestMag > maximumMagnitude){
+            cout<<"Max "<<maximumMagnitude<<" | Actual "<<biggestMag<<endl;
+            adjust = true;
+            break;
+        }
+    }
+
+    for(int layer = 1; adjust && layer < network.size();layer++){
+        network[layer].constrainWeights(maximumMagnitude);
+    }
+
+    if(adjust)
+        constrainWeights(maximumMagnitude);
+}
+
+
 //This method can efficiently calculate the average derivatives of an entire layer, however, it will not calculate the individual derivatives of that layer
 void Network::calculateNonIndividualDerivatives(){
     
 }
 
-void Network::updateWeights(vector<MatrixXd> derivatives){
+void Network::updateWeights(vector<MatrixXd> &derivatives, double learningSpeed){
 
     for(int i = 1;i<network.size();i++){ // i= 1 because the first layer does not have any weights. It is an input layer
-        network[i].weights = network[i].weights-(derivatives[i-1]*0.01);
+        network[i].weights = network[i].weights-(derivatives[i-1]*learningSpeed);
     }
 
 }
+
+void Network::updateWeightsWithMomentum(vector<MatrixXd> derivatives, double learningSpeed, double beta){
+
+    MatrixXd localMomentum;
+
+    for(int layer = 1;layer<network.size();layer++){ // i= 1 because the first layer does not have any weights. It is an input layer
+        localMomentum = network[layer].momentum*beta + derivatives[layer-1]*(1.0-beta);
+        network[layer].momentum = localMomentum;
+        network[layer].weights = network[layer].weights-(localMomentum*learningSpeed);
+    }
+
+}
+
 
 /*
 DEBUGGING

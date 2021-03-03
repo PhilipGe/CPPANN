@@ -11,6 +11,7 @@ Layer::Layer(int thisLayerNodes, int previousLayerNodes, bool test, int weightCo
     //the rows represent this layer's nodes. The columns represent the previous layer's nodes    
     if(!test){
         weights = MatrixXd::Random(thisLayerNodes, previousLayerNodes);
+        momentum = weights-weights; //momentum starts with 0
         derivatives = MatrixXd::Constant(thisLayerNodes, previousLayerNodes,0);
         outputs = MatrixXd::Constant(thisLayerNodes, 1,0);
     }else{
@@ -49,4 +50,15 @@ MatrixXd Layer::sigmoid(MatrixXd ps){
     return out;
 }
 
+//returns a column of 
+MatrixXd Layer::getNodesWeightsMagnitudes(){
+    MatrixXd squaredSum = (weights*(weights.transpose())).diagonal();
+    MatrixXd sqrtSum = squaredSum.array().sqrt().matrix();
+    
+    return sqrtSum;
+}
+
 //BACKPROPOGATION
+void Layer::constrainWeights(double divideBy){
+    weights = weights/divideBy;
+}

@@ -7,6 +7,21 @@
 #include <string>
 #include "MNISTTester.hpp"
 
+int outputValue(MatrixXd outputMatrix){
+
+    double maxC = outputMatrix(0,0);
+    int result;
+
+    for(int x = 0;x < outputMatrix.rows();x++){
+        if(outputMatrix(x,0) >= maxC){
+            maxC = outputMatrix(x,0);
+            result = x;
+        }
+    }
+
+    return result;
+}
+
 MatrixXd * MNISTTester::TestImagesOnDatabase(string databaseAddress, string imagesAddress, string labelsAddress, int numberOfImagesToRead, bool printImages){
     //(1) Set up image reading
     fstream imageFileStream = MNISTTrainerV2::initiateImageFileStream(imagesAddress);
@@ -27,6 +42,8 @@ MatrixXd * MNISTTester::TestImagesOnDatabase(string databaseAddress, string imag
     //(5) Set up return array
     MatrixXd * returnArray= new MatrixXd[NUMBEROFIMAGESTOREAD];
     
+    int correctCount = 0;
+    double cost = 0;
     //(6) Train Network
     for(int i = 0;i < NUMBEROFIMAGESTOREAD;i++){
         MNISTTrainerV2::readOneImageToCharArray(&imageFileStream, charImage);
@@ -37,8 +54,19 @@ MatrixXd * MNISTTester::TestImagesOnDatabase(string databaseAddress, string imag
         output = net->feedForward(image);
         returnArray[i] = output;
 
-        //cout<<"Desired: "<<label<<" | Actual: "<<output<<endl;
+        MatrixXd loss = output-MNISTTrainerV2::getOutputMatrix(label);
+
+        cost += (loss.array()*loss.array()).sum()/((double)NUMBEROFIMAGESTOREAD);
+
+        // cout<<label<<" | "<<outputValue(output)<<endl;
+        if(label == outputValue(output))
+            correctCount++;
+        // cout<<"Desired: "<<label<<" | Actual: "<<outputValue(output)<<endl;
+        // cout<<output<<endl;
     }
+
+    cout << ((double)correctCount)/((double)numberOfImagesToRead)<<endl;
+    cout<<"Cost: "<<cost<<endl;
 
     imageFileStream.close();
     labelFileStream.close();

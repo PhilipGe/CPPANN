@@ -29,9 +29,14 @@ class Layer{
         MatrixXd outputs;
         MatrixXd productSums;
         MatrixXd weights;
+        MatrixXd momentum;
 
         //BACKPROPOGATION
         DiagonalMatrix<double,Properties::numberOfOutputs> lastLayerErrors;
         DiagonalMatrix<double,Properties::nodesPerLayer> hiddenLayerErrors;
         MatrixXd derivatives;
+
+        MatrixXd getNodesWeightsMagnitudes();
+
+        void constrainWeights(double divideBy);
 };

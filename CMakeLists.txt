@@ -36,6 +36,7 @@ target_include_directories(File-Storage PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/MNIS
 
 add_executable(MNIST MNIST_Processing/TestTrainer.cpp)
 
+target_link_libraries(File-Storage PRIVATE sqlite3 Network supporting)
 target_link_libraries(MNIST PRIVATE sqlite3 pthread Network File-Storage supporting)
 
 # add_subdirectory(googletest)

@@ -35,8 +35,11 @@ class Network{
         vector<MatrixXd> backpropogate(MatrixXd testInput, MatrixXd desiredOutput); //returns vector of weight derivatives
         void backpropogateOptimized(MatrixXd testInput, MatrixXd desiredOutput, double averageFactor, double learningSpeed);
         void calculateNonIndividualDerivatives();
-        void updateWeights(vector<MatrixXd> derivatives);
+        void updateWeights(vector<MatrixXd> &derivatives, double learningRate = Properties::learningSpeed);
+        void updateWeightsWithMomentum(vector<MatrixXd> derivatives, double learningSpeed =Properties::learningSpeed, double beta = Properties::beta);
         void randomizeWeightsUniformDistribution();
+
+        void constrainWeights(double maximumMagnitude);
 
         //TRAINING
         void train(vector<MatrixXd> testInputs, vector<double> desiredOutputs, int numberOfIterations);
