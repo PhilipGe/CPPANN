@@ -26,15 +26,15 @@ int main(){
     string saveToDatabaseAddress14 = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/TrainingTests/MNISTTrialTwentyNine/Fourteen";
 
     string saveToDatabaseAddress30 = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentySeven/Two";
-    string saveToDatabaseAddress = saveToDatabaseAddress30;
+    string saveToDatabaseAddress = saveToDatabaseAddress7;
     // string saveToDatabaseAddress3 = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentySix";
     string saveToDatabaseAddress19 = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialNineteen";
     string imageAddress = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/Images/train-images-idx3-ubyte";
     string labelsAddress = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/Images/train-labels-idx1-ubyte";
     string testImageAddress = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/TestImages/t10k-images-idx3-ubyte";
     string testLabelsAddress = "/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/TestImages/t10k-labels-idx1-ubyte";
-    testImageAddress = imageAddress;
-    testLabelsAddress = labelsAddress;
+    // testImageAddress = imageAddress;
+    // testLabelsAddress = labelsAddress;
     
     //NETWORK 38 glitched (Trial19)
 
@@ -59,8 +59,8 @@ int main(){
     }
     // MNISTTester::TestImagesOnDatabase(saveToDatabaseAddress+"/Network1.db",imageAddress,labelsAddress,50);
     if(test){
-        int numberOfImagesToRead = 60000;
-        MNISTTester::TestImagesOnDatabase(saveToDatabaseAddress+"/Network45.db",testImageAddress,testLabelsAddress,numberOfImagesToRead);
+        int numberOfImagesToRead = 10000;
+        MNISTTester::TestImagesOnDatabase("/home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentySeven/Two/FinalNetwork.db",testImageAddress,testLabelsAddress,numberOfImagesToRead);
         // MNISTTester::TestImagesOnDatabase(saveToDatabaseAddress+"/Network1.db",testImageAddress,testLabelsAddress,numberOfImagesToRead);
         // MNISTTester::TestImagesOnDatabase(saveToDatabaseAddress+"/Network2.db",testImageAddress,testLabelsAddress,numberOfImagesToRead);
         // MNISTTester::TestImagesOnDatabase(saveToDatabaseAddress+"/Network3.db",testImageAddress,testLabelsAddress,numberOfImagesToRead);

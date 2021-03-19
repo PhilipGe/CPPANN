@@ -132,13 +132,13 @@ class NetworkSaver {
             int numberOfOutputs = sqlite3_column_int(stmt, 3);
 
             if(numberOfHiddenLayers != Properties::numberOfHiddenLayers)
-                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. " + to_string(numberOfHiddenLayers) +" != " + to_string(Properties::numberOfHiddenLayers));
+                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. NUMBEROFHIDDENLAYERS: " + to_string(numberOfHiddenLayers) +" != " + to_string(Properties::numberOfHiddenLayers));
             else if(nodesPerLayer != Properties::nodesPerLayer)
-                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. " + to_string(nodesPerLayer) +" != " + to_string(Properties::nodesPerLayer));
+                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. NODESPERLAYER: " + to_string(nodesPerLayer) +" != " + to_string(Properties::nodesPerLayer));
             else if(numberOfInputs != Properties::numberOfInputs)
-                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. " + to_string(numberOfInputs) +" != " + to_string(Properties::numberOfInputs));
+                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. NUMBEROFINPUTS: " + to_string(numberOfInputs) +" != " + to_string(Properties::numberOfInputs));
             else if(numberOfOutputs != Properties::numberOfOutputs)
-                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. " + to_string(numberOfOutputs) +" != " + to_string(Properties::numberOfOutputs));
+                throw invalid_argument("The network in the database inputted into NetworkGetter does not match the template defined in Properties. NUMBEROFOUTPUTS: " + to_string(numberOfOutputs) +" != " + to_string(Properties::numberOfOutputs));
 
 
             //for first hidden layer

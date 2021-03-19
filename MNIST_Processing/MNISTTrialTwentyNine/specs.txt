@@ -1,0 +1,268 @@
+Same as trial 28 excpet I will subtract 1 from the NUMBEROFBATCHES instead of 10. 
+I will also change the learning rate from 1 to 0.01
+
+One: No weight constraint
+    On TrianingImages:
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network0.db
+    0.0917667
+    Cost: 27.0984
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network10.db
+    0.145117
+    Cost: 0.89579
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network20.db
+    0.188067
+    Cost: 0.882014
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network30.db
+    0.2361
+    Cost: 0.857881
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network40.db
+    0.269467
+    Cost: 0.836072
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network50.db
+    0.290617
+    Cost: 0.820225
+
+----Adding 9 more batches had a good effect on the results of the training. Now I want implement batch increases as the epochs increase
+
+    On Testing Images:
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network0.db
+    0.0934
+    Cost: 27.0587
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network10.db
+    0.1449
+    Cost: 0.896296
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network20.db
+    0.1822
+    Cost: 0.883232
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network30.db
+    0.2287
+    Cost: 0.860527
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network40.db
+    0.2616
+    Cost: 0.839878
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/One/Network50.db
+    0.2814
+    Cost: 0.825727
+
+
+Two: Every epoch, the batch size will increase by 1. The first batch size is 10. The network will bounce around until it finds a flat minima.
+    On Training Images:
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network0.db
+    0.0917667
+    Cost: 27.0984
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network5.db
+    0.135817
+    Cost: 0.913226
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network10.db
+    0.190067
+    Cost: 0.895787
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network15.db
+    0.2345
+    Cost: 0.866284
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network20.db
+    0.283083
+    Cost: 0.837079
+
+----At epoch 20, this one achieved 28% accuracy when the previous, larger batch, method acieved 19%
+
+    On Testing Images:
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network0.db
+    0.0934
+    Cost: 27.0587
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network5.db
+    0.1328
+    Cost: 0.915714
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network10.db
+    0.1888
+    Cost: 0.898179
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network15.db
+    0.2301
+    Cost: 0.870058
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network20.db
+    0.2687
+    Cost: 0.842678
+
+--- Comparing these results, it can be seen that this method, so far, trains the net quicker. 20 epochs : 26% vs. 20 epochs : 18%
+
+--- More training following the same model. Learning rate of 0.01
+    On Test Set:
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network0.db
+    0.0934
+    Cost: 27.0587
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network10.db
+    0.1888
+    Cost: 0.898179
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network20.db
+    0.2687
+    Cost: 0.842678
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network30.db
+    0.3076
+    Cost: 0.816103
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network40.db
+    0.3401
+    Cost: 0.797621
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network50.db
+    0.3584
+    Cost: 0.784134
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network60.db
+    0.3777
+    Cost: 0.773668
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network70.db
+    0.3911
+    Cost: 0.764097
+
+
+Three: Same as Two except the learning rate will be 0.1 instead of 0.01
+
+    Results:
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network0.db
+    0.0934
+    Cost: 27.0587
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network10.db
+    0.1775
+    Cost: 0.880508
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network20.db
+    0.2328
+    Cost: 0.849518
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network30.db
+    0.2687
+    Cost: 0.828376
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network40.db
+    0.2952
+    Cost: 0.819988
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network50.db
+    0.3068
+    Cost: 0.817356
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network60.db
+    0.2933
+    Cost: 0.864258
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network70.db
+    0.3051
+    Cost: 0.825259
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network80.db
+    0.2925
+    Cost: 0.845258
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network90.db
+    0.2902
+    Cost: 0.88605
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network100.db
+    0.2838
+    Cost: 0.849692
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network110.db
+    0.2779
+    Cost: 0.904826
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network120.db
+    0.2505
+    Cost: 0.929978
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network130.db
+    0.2427
+    Cost: 0.933008
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network140.db
+    0.2497
+    Cost: 0.934892
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network150.db
+    0.2661
+    Cost: 0.940354
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Three/Network160.db
+    0.2509
+    Cost: 0.946469
+
+--- It seems that making the learning rate higher doesn't influence the network in the right way. Trial Two trained quickly in the beginning and slowed
+    as the epochs increased (aka the batch size increased). Because of that, I'll try cycling the batch size between 10 and 19 to see how it trains
+        Epoch : Batch Size
+          1         11
+          2         12
+          3         13
+         ...       ....
+          9         19
+          10        10
+          11        11
+
+Four: Cycling the batch size between 10 and 20 to see how it trains. Also, the initial networks' random weights will be seeded with the current time
+      which will cause more randomness. The weights are now also initialized to values between -4 and 4.
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Four/Network10.db
+    0.1024
+    Cost: 0.963897
+
+
+Five: Same as 4 but with weights initialized between -1 and 1. 
+    Results: After ten hours of running (696 epochs) the network has trained itself to an accuracy of 55%
+    I will try to train it with momentum next. Starting with new weight values 
+
+Six: I will try to train it with momentum next. Starting with new weight values 
+
+
+
+
+
+--- Trianing was quicker than before, achieveing 34.9% accuracy at the 40th epoch 
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Six/Network40.db
+    0.3492
+
+
+    Compared to the previous best run with 34.% accuracy atthe 40th epoch
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network40.db
+    0.3401
+
+--- The training seems to be extremely slow, however. I will train the networks on a much larger model now to see how that will affect the process
+
+Seven: Batch size: 20. Number of nodes per hidden layer: 100. Eveything else will remain the same
+
+    Previous:
+        public:
+        static const int numberOfHiddenLayers = 2;
+        static const int nodesPerLayer = 32;
+        static const int numberOfInputs = 784;
+        static constexpr double learningSpeed = 0.01;
+        static const int numberOfOutputs = 10;
+        static constexpr double beta = 0.9;
+
+    Now:
+        public:
+        static const int numberOfHiddenLayers = 2;
+        static const int nodesPerLayer = 100;
+        static const int numberOfInputs = 784;
+        static constexpr double learningSpeed = 0.01;
+        static const int numberOfOutputs = 10;
+        static constexpr double beta = 0.9;
+
+--- It seems that the network takes the same amount of epochs to arrive at a slightly more accuracy result when compared to Two
+
+    Seven: 
+
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Seven/Network70.db
+    0.4118
+    Cost: 0.767531
+
+    Two:
+    Getting Network from /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Two/Network70.db
+    0.3911
+    Cost: 0.764097
+
+Eight: Building on Network73.db of test Seven, I will try and implement a more efficient recall algorithm that accesses the filestreams in the beginning 
+       And saves the images and labels in seperate objects, accessing the objects rather than reading as the program iterates
+
+Nine: Learning rate decreased
+
+Ten: Learning rate brought back to 0.01
+
+Eleven: Decreased batch size to 5
+
+Twelve: Batch size 30, beta 0.7, learning rate 0.005
+
+Thirteen: Fluctuating learning rate between 0.001 and 0.015 incrementing by 0.02 each epoch
+
+Saving Network to /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Thirteen/Network461.db
+Error 2: no such column: nan
+Iteration Number: 1998
+
+Fourteen: Constraining nodes' weights' magnitudes to 784.
+
+BEST NETWORK: /home/philip/Desktop/Projects/CPPANN/MNIST_Processing/MNISTTrialTwentyNine/Thirteen/Network460.db
